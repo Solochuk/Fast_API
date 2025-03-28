@@ -6,14 +6,15 @@ async def fetch_users():
     async with aiohttp.ClientSession() as session:
         async with session.get("https://jsonplaceholder.typicode.com/users") as response:
             return await response.json()
-        
+
 async def connect_to_db():
-    return await aiomysql.connect(
+    conn = await aiomysql.connect(
         host="localhost",
-        user="your_username",
-        password="your_password",
-        db="your_database"
+        user="username",
+        password="password",
+        db="database"
     )
+    return conn
 
 async def fetch_users_from_db():
     conn = await connect_to_db()
@@ -39,16 +40,16 @@ async def delete_user_from_db(user_id):
 
 async def main():
     users = await fetch_users()
-    print("Fetched users from API:", users)
+    print("Всі користувачі з публічного API:", users)
 
     db_users = await fetch_users_from_db()
-    print("Fetched users from DB:", db_users)
+    print("Всі користувачі в базі даних:", db_users)
 
-    await add_user_to_db("Jane Doe", "jane.doe@example.com")
-    print("Added new user.")
+    await add_user_to_db("SDHL", "asdasf@gmail.com")
+    print("Додано нового користувача")
 
     await delete_user_from_db(1)
-    print("Deleted user with ID 1.")
+    print("Видалено користувача з ID 1")
 
 if __name__ == "__main__":
     asyncio.run(main())

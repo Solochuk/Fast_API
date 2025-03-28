@@ -16,17 +16,17 @@ class Book(BaseModel):
     year: int = Field(..., description="Рік видання книги")
     amout: int = Field(..., description="Кількість книг")
 
-@app.get('/books', response_model=List[Book])
+@app.get('/books', response_model=List[Book], summary="Знайти всі наявні книги", tags=["Books"])
 def get_books():
     return books
 
-@app.post('/books', response_model=Book, status_code=status.HTTP_201_CREATED)
+@app.post('/books', response_model=Book, status_code=status.HTTP_201_CREATED, summary="Додати нову книжку", tags=["Books"])
 def add_book (book: Book):
     book.id = len(books) + 1
     books.append(book)
     return book
 
-@app.get('/books/{id}', response_model=Book)
+@app.get('/books/{id}', response_model=Book, summary="Знайти книгу за ID", tags=["Books"])
 def get_book(id: int):
     for book in books:
         if book.id == id:
@@ -66,7 +66,7 @@ class User(BaseModel):
         if "+380" not in value:
             raise ValueError('Невалідний номер телефону')
 
-@app.post('/users', response_model=User, status_code=status.HTTP_201_CREATED)
+@app.post('/users', response_model=User, status_code=status.HTTP_201_CREATED, summary="Додати нового користувача", tags=["Users"])
 def add_user(user: User):
     user.id = len(users) + 1
     users.append(user)
